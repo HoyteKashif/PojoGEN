@@ -1,6 +1,5 @@
 package com.easytech.main;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,19 +8,20 @@ import java.util.Set;
 import com.easytech.generator.PojoClassGenerator;
 import com.easytech.staticvalues.PojoStaticValues;
 
-
-
 public class PojoGen implements PojoStaticValues{
 	
 	enum ArgumentKeyEnum{
-		CLASS_PART, MEMBER_PART
+		CLASS_PART, MEMBER_PART, SAMPLE_PART, HELP_PART, OUTPUT_DIRECTORY_PART
 	}
 	
 	public static void main(String[] args){
 		try{
-//			System.out.println("Parsing command line arguments");
 			Map<ArgumentKeyEnum,Set<String>> argMap = getArgumentMap(args);
-//			System.out.println("Validating command line arguments");
+			
+			//TODO: check if the user wants to get help or if they want to see the sample
+			
+			
+			// check whether class_part and member part were supplied but only if it is a request for a POJO and not a sample or help text
 			validateArguments(argMap);
 			
 			//FIXME: possibly a better way to do it is by removing the type parameters
@@ -29,21 +29,32 @@ public class PojoGen implements PojoStaticValues{
 			if (!argMap.get(ArgumentKeyEnum.CLASS_PART).isEmpty()){
 				strClassName = argMap.get(ArgumentKeyEnum.CLASS_PART).iterator().next();
 			}
-//			System.out.println("Starting Pojo Generation");
+
 			System.out.println(PojoClassGenerator.buildPojo( strClassName, argMap.get(ArgumentKeyEnum.MEMBER_PART)));
-//			System.out.println(argMap);
+
 		}catch (final Exception e){
 			System.err.println(e.getMessage());
 		}
 	}
 	
+	//FIXME: only use this to verify the contents ot the help and sample parts
+	private static boolean isHelpRequest(Map<ArgumentKeyEnum,Set<String>> p_argMap) throws Exception{
+		if (p_argMap.isEmpty()){
+			throw new Exception(DEFAULT_ERROR_MESSAGE);
+		} else if (p_argMap.containsKey(ArgumentKeyEnum.HELP_PART) && p_argMap.containsKey(ArgumentKeyEnum.SAMPLE_PART)){
+			throw new Exception(DEFAULT_ERROR_MESSAGE + "\n" + DEFAULT_HELP_MESSAGE);
+		}	
+		return true;
+	}
+	
+	//FIXME: only use this to verify the contents of the class and member parts
 	private static void validateArguments(Map<ArgumentKeyEnum,Set<String>> p_argMap)throws Exception{
 		if (p_argMap.isEmpty()){
 			throw new Exception(DEFAULT_ERROR_MESSAGE);
-		} else if (!p_argMap.containsKey(ArgumentKeyEnum.CLASS_PART)){
+		} else if (!p_argMap.containsKey(ArgumentKeyEnum.CLASS_PART) || !p_argMap.get(ArgumentKeyEnum.CLASS_PART).isEmpty()){
 			throw new Exception("Missing class part.\n"
 					+ DEFAULT_ERROR_MESSAGE);
-		} else if (!p_argMap.containsKey(ArgumentKeyEnum.MEMBER_PART)){
+		} else if (!p_argMap.containsKey(ArgumentKeyEnum.MEMBER_PART) || !p_argMap.get(ArgumentKeyEnum.MEMBER_PART).isEmpty()){
 			throw new Exception("Missing member part.\n"
 					+ DEFAULT_ERROR_MESSAGE);
 		}
@@ -56,22 +67,15 @@ public class PojoGen implements PojoStaticValues{
 		ArgumentKeyEnum argKey = null;
 		for (String arg : args){
 			if (arg.startsWith("-")){
-				if(arg.equals("-help")){
-					System.out.println(DEFAULT_ERROR_MESSAGE + "\n"
-						+ "Use the following DataType extensions:\n"
-						+ DataTypeEnum.getOptions());
-					System.exit(0);
-				}else if(arg.equals("-sample")){
-					Set<String> sampleMembers = new HashSet<>();
-					sampleMembers.add("fizz_string");
-					sampleMembers.add("buzz_string");
-					sampleMembers.add("fizz_buzz_bigdecimal");
-					System.out.println("ex: PojoGen -c FizzBuzz -p fizz_string buzz_string fizz_buzz_bigdecimal\n");
-					System.out.println(PojoClassGenerator.buildPojo( "FizzBuzz", sampleMembers));
-					System.exit(0);
-				}else if(arg.equals("-c")){
+				if (arg.equals("-help")){
+					argKey = ArgumentKeyEnum.HELP_PART;
+				}else if (arg.equals("-sample")){
+					argKey = ArgumentKeyEnum.SAMPLE_PART;
+				}else if (arg.equals("-o")){
+					argKey = ArgumentKeyEnum.OUTPUT_DIRECTORY_PART;
+				}else if (arg.equals("-c")){
 					argKey = ArgumentKeyEnum.CLASS_PART;
-				}else if(arg.equals("-p")){
+				}else if (arg.equals("-p")){
 					argKey = ArgumentKeyEnum.MEMBER_PART;
 				}else{
 					throw new Exception("Illegal arguments.\n"
@@ -79,14 +83,40 @@ public class PojoGen implements PojoStaticValues{
 				}
 				argMap.put(argKey, new HashSet<String>());
 			}else{
-				if (!argMap.isEmpty()){
+				/** associate date to it parameter part **/
+				if (null != argKey && !argMap.isEmpty()){
 					Set<String> prevSet = argMap.get(argKey);
 					prevSet.add(arg);
 					argMap.put(argKey, prevSet);
+				}else{
+					throw new Exception("Illegal program flow.");
 				}
 			}
 		}
 		return argMap;
 	}
 	
+	//TODO: Implement it but not sure how it will fit into the structure
+	// ~ possibly accept the POJO and output it to the file
+	private static void outputToDirectory(){
+		
+	}
+	
+	//TODO: Add to the work-flow only when the user gives has a help part in the arguments input
+	private static void outputHelpMessage(){
+		System.out.println(DEFAULT_ERROR_MESSAGE + "\n"
+				+ "Use the following DataType extensions:\n"
+				+ DataTypeEnum.getOptions());
+	}
+	
+	//TODO: Place this after all the checks have been done as the second to last part before outputting the POJO to a file
+	private static void buildSamplePOJO() throws Exception{
+		final Set<String> sampleMembers = new HashSet<>();
+		sampleMembers.add("fizz_string");
+		sampleMembers.add("buzz_string");
+		sampleMembers.add("fizz_buzz_bigdecimal");
+		
+		System.out.println("ex: PojoGen -c FizzBuzz -p fizz_string buzz_string fizz_buzz_bigdecimal\n");
+		System.out.println(PojoClassGenerator.buildPojo( "FizzBuzz", sampleMembers));
+	}
 }
