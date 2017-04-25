@@ -9,6 +9,7 @@ public interface  PojoStaticValues {
 	public final static String TAB = "    ";
 	public final static String TAB2X = TAB + TAB;
 
+	public final static String DEFAULT_HELP_MESSAGE = "use PojoGen -help -sample to see an example of a POJO.";
 	public final static String DEFAULT_ERROR_MESSAGE = "ex:PojoGen -c ClassName -p member_name_datatype";
 
 	public enum PojoMethodTypeEnum{

@@ -16,35 +16,49 @@ public class PojoGen implements PojoStaticValues{
 	
 	public static void main(String[] args){
 		try{
-			Map<ArgumentKeyEnum,Set<String>> argMap = getArgumentMap(args);
-			
-			//TODO: check if the user wants to get help or if they want to see the sample
-			
-			
-			// check whether class_part and member part were supplied but only if it is a request for a POJO and not a sample or help text
-			validateArguments(argMap);
-			
-			//FIXME: possibly a better way to do it is by removing the type parameters
-			String strClassName = "";
-			if (!argMap.get(ArgumentKeyEnum.CLASS_PART).isEmpty()){
-				strClassName = argMap.get(ArgumentKeyEnum.CLASS_PART).iterator().next();
-			}
-
-			System.out.println(PojoClassGenerator.buildPojo( strClassName, argMap.get(ArgumentKeyEnum.MEMBER_PART)));
-
+			processRequest( getArgumentMap(args));
 		}catch (final Exception e){
 			System.err.println(e.getMessage());
 		}
 	}
 	
-	//FIXME: only use this to verify the contents ot the help and sample parts
+	private static void processRequest(Map<ArgumentKeyEnum,Set<String>> p_argMap) throws Exception{
+		if (isHelpRequest(p_argMap)){
+			processHelpRequest(p_argMap);
+		}else{
+			processPojoGenRequest(p_argMap);
+		}
+	}
+	
+	//FIXME: only use this to verify the contents to the help and sample parts
 	private static boolean isHelpRequest(Map<ArgumentKeyEnum,Set<String>> p_argMap) throws Exception{
-		if (p_argMap.isEmpty()){
-			throw new Exception(DEFAULT_ERROR_MESSAGE);
-		} else if (p_argMap.containsKey(ArgumentKeyEnum.HELP_PART) && p_argMap.containsKey(ArgumentKeyEnum.SAMPLE_PART)){
-			throw new Exception(DEFAULT_ERROR_MESSAGE + "\n" + DEFAULT_HELP_MESSAGE);
-		}	
-		return true;
+		if (p_argMap.containsKey(ArgumentKeyEnum.HELP_PART)){
+			return true;
+		} else if (!p_argMap.containsKey(ArgumentKeyEnum.HELP_PART) && p_argMap.containsKey(ArgumentKeyEnum.SAMPLE_PART)){
+			throw new Exception(DEFAULT_HELP_MESSAGE);
+		}
+		return false;
+	}
+	
+	private static void processPojoGenRequest(Map<ArgumentKeyEnum,Set<String>> p_argMap) throws Exception{
+		// check whether class_part and member part were supplied but only if it is a request for a POJO and not a sample or help text
+		validateArguments(p_argMap);	
+
+		//FIXME: possibly a better way to do it is by removing the type parameters
+		String strClassName = "";
+		if (!p_argMap.get(ArgumentKeyEnum.CLASS_PART).isEmpty()){
+			strClassName = p_argMap.get(ArgumentKeyEnum.CLASS_PART).iterator().next();
+		}
+
+		System.out.println(PojoClassGenerator.buildPojo( strClassName, p_argMap.get(ArgumentKeyEnum.MEMBER_PART)));
+	}
+	
+	private static void processHelpRequest(Map<ArgumentKeyEnum,Set<String>> p_argMap) throws Exception{
+		if (p_argMap.containsKey(ArgumentKeyEnum.SAMPLE_PART)){
+			outputSamplePOJO();
+		}else{
+			outputHelpMessage();
+		}
 	}
 	
 	//FIXME: only use this to verify the contents of the class and member parts
@@ -110,7 +124,7 @@ public class PojoGen implements PojoStaticValues{
 	}
 	
 	//TODO: Place this after all the checks have been done as the second to last part before outputting the POJO to a file
-	private static void buildSamplePOJO() throws Exception{
+	private static void outputSamplePOJO() throws Exception{
 		final Set<String> sampleMembers = new HashSet<>();
 		sampleMembers.add("fizz_string");
 		sampleMembers.add("buzz_string");
