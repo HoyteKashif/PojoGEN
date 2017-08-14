@@ -7,7 +7,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Map;
 
-import com.easytech.generator.Pojo;
+import com.easytech.pojo.component.generator.Pojo;
 import com.easytech.staticvalues.PojoStaticValues;
 import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
 
