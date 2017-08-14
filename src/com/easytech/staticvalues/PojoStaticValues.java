@@ -1,22 +1,30 @@
 package com.easytech.staticvalues;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public interface  PojoStaticValues {
+import com.easytech.request.implementation.IRequest;
+import com.easytech.request.implementation.PojoGenRequest;
 
+public final class PojoStaticValues {
+
+	
 	public final static String TAB = "    ";
 	public final static String TAB2X = TAB + TAB;
 
-	public final static String DEFAULT_HELP_MESSAGE = "use PojoGen -help -sample to see an example of a POJO.";
-	public final static String DEFAULT_ERROR_MESSAGE = "ex:PojoGen -c ClassName -p member_name_datatype";
+	public final static String DEFAULT_HELP_MESSAGE = "Usage:"  + "\n"
+			+ TAB + "PojoGen -c <classname> -p <membername_datatype> ... <membername_datatype>" + "\n"
+			+ TAB + "PojoGen -help" + "\n"
+			+ TAB + "PojoGen -sample";
+	public final static String DEFAULT_ERROR_MESSAGE = "ex:\n" + TAB + "PojoGen -c ClassName -p member_name_datatype";
 
 	public enum PojoMethodTypeEnum{
 		SET,GET,CONSTRUCTOR
 	}
 	
-	public static enum DataTypeEnum{
+	public enum DataTypeEnum{
 		_BIGDECIMAL("java.math.BigDecimal", "l"),
 		_TIMESTAMP("java.sql.Timestamp", "ts"),
 		_DATE("java.sql.Date", "dt"),
@@ -59,6 +67,15 @@ public interface  PojoStaticValues {
 			return UNSPECIFIED;
 		}
 		
+		public static boolean validTypes(final List<String> p_setTypes){
+			for (String arg : p_setTypes){
+				if (UNSPECIFIED.equals(getType(arg))){
+					return false;
+				}
+			}
+			return true;
+		}
+		
 		private static int maxClazzLength(){
 			int max = -1;
 			for (DataTypeEnum dataType : values()){
@@ -71,8 +88,10 @@ public interface  PojoStaticValues {
 		}
 		
 		public static String getOptions(){
-			List<String> lstDataTypes = new ArrayList<>();
+			final List<String> lstDataTypes = new ArrayList<>();
 			StringBuilder sb = new StringBuilder();
+			
+			// add the Java Data Type
 			for (DataTypeEnum dataType : values()){
 				if (!DataTypeEnum.UNSPECIFIED.equals(dataType)){
 					sb.append(dataType.getClazz());
@@ -90,17 +109,20 @@ public interface  PojoStaticValues {
 				}
 			}
 			
+			// create space between the type extension and the Java Data Type 
 			int maxLineLength = -1;
 			for (String strType : lstDataTypes){
-				int length = strType.length();
+				final int length = strType.length();
 				if (length > maxLineLength){
 					maxLineLength = length;
 				}
 			}
 			
-			StringBuilder strBuilder = new StringBuilder();
-			for (Iterator<String> iterator = lstDataTypes.iterator(); iterator.hasNext();){
-				String strType = iterator.next();
+			// add the extension (name of ENUM)
+			final StringBuilder strBuilder = new StringBuilder();
+			strBuilder.append("DataType Options:\n");
+			for (Iterator<String> itrTypes = lstDataTypes.iterator(); itrTypes.hasNext();){
+				String strType = itrTypes.next();
 				int i = 0;
 				while (i++ < maxLineLength + 1){
 					strBuilder.append("-");
@@ -109,7 +131,7 @@ public interface  PojoStaticValues {
 				strBuilder.append("\n");
 				strBuilder.append(strType);
 				
-				if (!iterator.hasNext()){
+				if (!itrTypes.hasNext()){
 					int c = 0;
 					while (c++ < maxLineLength + 1){
 						strBuilder.append("-");
@@ -120,4 +142,23 @@ public interface  PojoStaticValues {
 			return strBuilder.toString();
 		}
 	}
+	
+	
+	/**
+	 * 
+	 * @param p_lstData
+	 * @return
+	 */
+	public static boolean containsNonNull(final List<String> p_lstData){
+		if (null == p_lstData) return false;
+		
+		for (String arg : p_lstData){ if (null == arg){ return false;}};
+		return true;
+	}
+	
+	public static List<IRequest> getRequestTypes(){
+		return Arrays.asList(new PojoGenRequest());
+	}
+	
+	private PojoStaticValues(){};
 }
