@@ -25,7 +25,14 @@ public class PojoGen {
 		}
 	}
 	
-	
+	/**
+	 * Used to create a {@code Map} linking the Argument part type to the value parsed 
+	 * from the input passed in via the common line.
+	 * 
+	 * @param p_arrArgs Array of arguments retrieved from the command line
+	 * @return {@code Map<ArgumentPartEnum, List<String>}
+	 * @throws Exception
+	 */
 	private static Map<ArgumentPartEnum,List<String>> createArgumentMap(final String[] p_arrArgs) throws Exception{
 		if (p_arrArgs.length < 1 || !p_arrArgs[0].startsWith("-")){
 			return Collections.singletonMap(ArgumentPartEnum.HELP_PART, Collections.emptyList());

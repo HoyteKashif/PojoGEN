@@ -7,7 +7,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Map;
 
-import com.easytech.pojo.component.generator.Pojo;
+import com.easytech.pojo.component.generator.Pojo.PojoBuilder;
 import com.easytech.staticvalues.PojoStaticValues;
 import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
 
@@ -27,12 +27,12 @@ public class PojoGenRequest implements IRequest {
 	public void process() throws Exception {
 
 		String strClassName = "";
-		List<String> lstClassPartValues = m_argumentMap.get(ArgumentPartEnum.CLASS_PART);
+		final List<String> lstClassPartValues = m_argumentMap.get(ArgumentPartEnum.CLASS_PART);
 		if (!lstClassPartValues.isEmpty()) {
 			strClassName = lstClassPartValues.get(0);
 		}
 
-		outputToCurrentWorkingDirectory(strClassName, Pojo.PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).toString().getBytes());
+		outputToCurrentWorkingDirectory(strClassName, PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).toString().getBytes());
 	}
 
 	/**

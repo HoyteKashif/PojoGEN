@@ -12,6 +12,13 @@ import com.easytech.pojo.component.method.PojoMethod;
 import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
 import com.easytech.staticvalues.PojoStaticValues.PojoMethodTypeEnum;
 
+/**
+ * Class used to represent a Plain old JAVA Object (POJO).
+ * POJO is made of members/properties and their getter or setter methods.
+ * 
+ * @author WizardOfOz
+ *
+ */
 public class Pojo{
 	private static String NEWLINE = "\n";
 	private static String NEWLINE2x = "\n\n";
@@ -93,6 +100,11 @@ public class Pojo{
 		return m_strRepresentation;
 	}
 	
+	/**
+	 * Main Builder used to assemble a POJO object.
+	 * @author WizardOfOz
+	 *
+	 */
 	public static class PojoBuilder{
 		
 		private PojoBuilder(){}
