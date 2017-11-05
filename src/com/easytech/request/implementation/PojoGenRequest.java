@@ -32,16 +32,13 @@ public class PojoGenRequest implements IRequest {
 			strClassName = lstClassPartValues.get(0);
 		}
 
-		outputToCurrentWorkingDirectory(strClassName, PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).toString().getBytes());
+		System.out.println(PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).toString());
+		
+//		outputToCurrentWorkingDirectory(strClassName, PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).toString().getBytes());
 	}
 
-	/**
-	 * This method determines whether or not the user has submitted all the values necessary 
-	 * to allow for this request to be processed. If the user has not included a value necessary for 
-	 * this request an error message is output to the command line.
-	 */
-	@Override
-	public IRequest setArgumentMap(final Map<ArgumentPartEnum, List<String>> p_argumentMap) throws Exception {
+	private void validateArgumentMap(final Map<ArgumentPartEnum, List<String>> p_argumentMap) throws Exception
+	{
 		if (p_argumentMap.isEmpty()) {
 			throw new Exception(PojoStaticValues.DEFAULT_ERROR_MESSAGE);
 		} else if (!p_argumentMap.containsKey(ArgumentPartEnum.CLASS_PART)
@@ -54,6 +51,17 @@ public class PojoGenRequest implements IRequest {
 			throw new Exception("Illegal Member parameter\n\n" + PojoStaticValues.DEFAULT_ERROR_MESSAGE + "\n"
 					+ DataTypeEnum.getOptions());
 		}
+	}
+	
+	/**
+	 * This method determines whether or not the user has submitted all the values necessary 
+	 * to allow for this request to be processed. If the user has not included a value necessary for 
+	 * this request an error message is output to the command line.
+	 */
+	@Override
+	public IRequest setArgumentMap(final Map<ArgumentPartEnum, List<String>> p_argumentMap) throws Exception {
+		
+		validateArgumentMap(p_argumentMap);
 
 		// passed all the test so set it
 		this.m_argumentMap = p_argumentMap;

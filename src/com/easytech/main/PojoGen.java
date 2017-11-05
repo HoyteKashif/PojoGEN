@@ -5,13 +5,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.easytech.request.factory.RequestFactory;
 import com.easytech.request.implementation.IRequest.ArgumentPartEnum;
 import com.easytech.staticvalues.PojoStaticValues;
 
 public class PojoGen {
-	
 	
 	public static void main(String[] args){
 		try{			
@@ -52,11 +52,9 @@ public class PojoGen {
 				argumentMap.put(argPart, new ArrayList<String>());
 			}else{
 				/** associate date to it parameter part **/
-				if (null != argPart){
-					argumentMap.get(argPart).add(arg);
-				}else{
-					throw new Exception("Illegal program flow.");
-				}
+				Objects.requireNonNull(argPart, "Non-Null Argument Part is required.");
+				
+				argumentMap.get(argPart).add(arg);
 			}
 		}
 		

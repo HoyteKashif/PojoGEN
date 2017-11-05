@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * Class used to represent a request from the user which is made of two
- * behaviors or functions, process() performs the work needed to be done in order to satify the 
+ * behaviors or functions, process() performs the work needed to be done in order to satisfy the 
  * request and setArgumentMap() performs the initial setup needed to make the process() method work.
  * 
  * @author WizardOfOz

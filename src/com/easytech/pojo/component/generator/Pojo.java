@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.easytech.pojo.component.factory.PojoMethodFactory;
 import com.easytech.pojo.component.generator.PojoMember.PojoMemberBuilder;
 import com.easytech.pojo.component.method.PojoMethod;
+import com.easytech.pojogen.model.PojoGenRequestModel;
 import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
 import com.easytech.staticvalues.PojoStaticValues.PojoMethodTypeEnum;
 
@@ -108,8 +110,26 @@ public class Pojo{
 	public static class PojoBuilder{
 		
 		private PojoBuilder(){}
+		
+		public static Pojo getPojo(final PojoGenRequestModel p_oModel)
+		{
+			Objects.requireNonNull(p_oModel);
+			Objects.requireNonNull(p_oModel.getClazzName());
+			Objects.requireNonNull(p_oModel.getMemberMap());
+			
+			return getPojo(p_oModel.getClazzName(), p_oModel.getMemberMap());
+		}
+		
 		public static Pojo getPojo(final String p_strClazzName, final List<String> p_argumentSet) throws Exception{
-			final Map<String, DataTypeEnum> memberNameToTypeMap = createMemberToTypeMap(p_argumentSet);
+			return getPojo(p_strClazzName, createMemberToTypeMap(p_argumentSet));
+		}
+		
+		public static Pojo getPojo(final String p_strClazzName, final Map<String, DataTypeEnum> p_MemberToTypeMap)
+		{
+			Objects.requireNonNull(p_strClazzName);
+			Objects.requireNonNull(p_MemberToTypeMap);
+			
+			final Map<String, DataTypeEnum> memberNameToTypeMap = p_MemberToTypeMap;
 			final List<PojoMember> members =  buildMembers(memberNameToTypeMap); 
 			final PojoMethod constructor = PojoMethodFactory.getMethod(PojoMethodTypeEnum.CONSTRUCTOR, p_strClazzName, null);
 			final List<PojoMethod> methods =  PojoMethodFactory.getMethods(memberNameToTypeMap);
