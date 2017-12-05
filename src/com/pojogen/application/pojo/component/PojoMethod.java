@@ -1,6 +1,6 @@
-package com.easytech.pojo.component.method;
+package com.pojogen.application.pojo.component;
 
-import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
+import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
 
 public interface PojoMethod {
 	DataTypeEnum getDataType();

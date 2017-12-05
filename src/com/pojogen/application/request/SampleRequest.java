@@ -1,11 +1,11 @@
-package com.easytech.request.implementation;
+package com.pojogen.application.request;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.easytech.pojo.component.generator.Pojo;
-import com.easytech.staticvalues.PojoStaticValues;
+import com.pojogen.application.pojo.component.Pojo;
+import com.pojogen.application.shared.util.PojoStaticValues;
 
 /**
  * Implementation of a Sample Request. 
@@ -14,7 +14,7 @@ import com.easytech.staticvalues.PojoStaticValues;
  * <br>
  * Gives the user an opportunity to see a sample output.
  * 
- * @author WizardOfOz
+ * @author Kashif Hoyte
  *
  */
 public class SampleRequest implements IRequest{

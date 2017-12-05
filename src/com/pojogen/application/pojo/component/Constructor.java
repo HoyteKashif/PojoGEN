@@ -1,7 +1,7 @@
-package com.easytech.pojo.component.method;
+package com.pojogen.application.pojo.component;
 
-import com.easytech.staticvalues.PojoStaticValues;
-import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
+import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
+import com.pojogen.application.shared.util.PojoStaticValues;
 
 public class Constructor implements PojoMethod {
 	private String strClazzName;
@@ -11,7 +11,6 @@ public class Constructor implements PojoMethod {
 	
 	@Override
 	public String toString(){
-
 		return String.format(PojoStaticValues.TAB + "public %s(){\n" + PojoStaticValues.TAB + "}", strClazzName);
 	}
 	
@@ -23,7 +22,6 @@ public class Constructor implements PojoMethod {
 
 	@Override
 	public DataTypeEnum getDataType() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

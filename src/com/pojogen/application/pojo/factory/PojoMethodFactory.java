@@ -1,17 +1,22 @@
-package com.easytech.pojo.component.factory;
+package com.pojogen.application.pojo.factory;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.easytech.pojo.component.method.Constructor.ConsructorMethodBuilder;
-import com.easytech.pojo.component.method.Getter.GetMethodBuilder;
-import com.easytech.pojo.component.method.PojoMethod;
-import com.easytech.pojo.component.method.Setter.SetMethodBuilder;
-import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
-import com.easytech.staticvalues.PojoStaticValues.PojoMethodTypeEnum;
+import com.pojogen.application.pojo.component.Constructor.ConsructorMethodBuilder;
+import com.pojogen.application.pojo.component.Getter.GetMethodBuilder;
+import com.pojogen.application.pojo.component.PojoMethod;
+import com.pojogen.application.pojo.component.Setter.SetMethodBuilder;
+import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
+import com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum;
 
+/**
+ * 
+ * @author Kashif Hoyte
+ *
+ */
 public class PojoMethodFactory {
 	public static PojoMethod getMethod(final PojoMethodTypeEnum p_eMethodType,final String p_methodName, final DataTypeEnum p_dataType){
 		Objects.requireNonNull(p_eMethodType);

@@ -1,4 +1,4 @@
-package com.easytech.pojo.component.generator;
+package com.pojogen.application.pojo.component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.easytech.pojo.component.factory.PojoMethodFactory;
-import com.easytech.pojo.component.generator.PojoMember.PojoMemberBuilder;
-import com.easytech.pojo.component.method.PojoMethod;
-import com.easytech.pojogen.model.PojoGenRequestModel;
-import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
-import com.easytech.staticvalues.PojoStaticValues.PojoMethodTypeEnum;
+import com.pojogen.application.pojo.component.PojoMember.PojoMemberBuilder;
+import com.pojogen.application.pojo.factory.PojoMethodFactory;
+import com.pojogen.application.request.model.PojoGenRequestModel;
+import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
+import com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum;
 
 /**
  * Class used to represent a Plain old JAVA Object (POJO).
@@ -22,8 +21,8 @@ import com.easytech.staticvalues.PojoStaticValues.PojoMethodTypeEnum;
  *
  */
 public class Pojo{
-	private static String NEWLINE = "\n";
-	private static String NEWLINE2x = "\n\n";
+	private static final String NEWLINE = "\n";
+	private static final String NEWLINE2x = "\n\n";
 	private String m_strRepresentation;
 	private String m_strDeclaration;
 	private List<PojoMethod> m_MethodList;
@@ -63,8 +62,6 @@ public class Pojo{
 	public void setDeclaration(final String p_strClassName){
 		this.m_strDeclaration = String.format("public class %s", p_strClassName);
 	}
-	
-	
 	
 	public void buildRepresentation(){
 		StringBuilder sb = new StringBuilder();
@@ -107,7 +104,7 @@ public class Pojo{
 	 * @author WizardOfOz
 	 *
 	 */
-	public static class PojoBuilder{
+	public static final class PojoBuilder{
 		
 		private PojoBuilder(){}
 		
@@ -171,7 +168,7 @@ public class Pojo{
 				
 				// CamelCase member name
 				String[] arrName = arg.split("_");
-				StringBuilder nameBuilder = new StringBuilder();
+				final StringBuilder nameBuilder = new StringBuilder();
 				for (String namePart : arrName){
 					if (!namePart.isEmpty() && Character.isAlphabetic(namePart.charAt(0))){
 						// capitalize the first character

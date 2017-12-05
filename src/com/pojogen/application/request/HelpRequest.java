@@ -1,10 +1,10 @@
-package com.easytech.request.implementation;
+package com.pojogen.application.request;
 
 import java.util.List;
 import java.util.Map;
 
-import com.easytech.staticvalues.PojoStaticValues;
-import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
+import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
+import com.pojogen.application.shared.util.PojoStaticValues;
 
 public class HelpRequest implements IRequest {
 

@@ -1,4 +1,4 @@
-package com.easytech.request.implementation;
+package com.pojogen.application.request;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,14 +7,14 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Map;
 
-import com.easytech.pojo.component.generator.Pojo.PojoBuilder;
-import com.easytech.staticvalues.PojoStaticValues;
-import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
+import com.pojogen.application.pojo.component.Pojo.PojoBuilder;
+import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
+import com.pojogen.application.shared.util.PojoStaticValues;
 
 /**
  * Class used to represent a request from the user to create a JAVA class or object model (POJO).
  *  
- * @author WizardOfOz
+ * @author Kashif Hoyte
  *
  */
 public class PojoGenRequest implements IRequest {

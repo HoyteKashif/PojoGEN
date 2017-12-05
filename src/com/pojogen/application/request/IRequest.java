@@ -1,4 +1,4 @@
-package com.easytech.request.implementation;
+package com.pojogen.application.request;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Map;
  * behaviors or functions, process() performs the work needed to be done in order to satisfy the 
  * request and setArgumentMap() performs the initial setup needed to make the process() method work.
  * 
- * @author WizardOfOz
+ * @author Kashif Hoyte
  *
  */
 public interface IRequest{

@@ -1,40 +1,41 @@
-package com.easytech.pojo.component.method;
+package com.pojogen.application.pojo.component;
 
 import java.util.Objects;
 
-import com.easytech.staticvalues.PojoStaticValues;
-import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
+import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
+import com.pojogen.application.shared.util.PojoStaticValues;
 
 public class Getter implements PojoMethod {
 	private final DataTypeEnum m_eReturnType;
 	private final String strDeclaration;
 	private final String strBody;
-	
-	private Getter(final DataTypeEnum p_eReturnType, final String p_strDeclaration, final String p_strBody){
+
+	private Getter(final DataTypeEnum p_eReturnType, final String p_strDeclaration, final String p_strBody) {
 		this.m_eReturnType = p_eReturnType;
 		this.strDeclaration = p_strDeclaration;
 		this.strBody = p_strBody;
 	}
-	
+
 	@Override
-	public DataTypeEnum getDataType(){
+	public DataTypeEnum getDataType() {
 		return this.m_eReturnType;
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(strDeclaration + "{\n");
 		sb.append(strBody + "\n");
 		sb.append(PojoStaticValues.TAB + "}");
 		return sb.toString();
 	}
-	
-	public static class GetMethodBuilder{
-		public static Getter getMethod(final String p_strFieldName, final DataTypeEnum p_eReturnType){
+
+	public static class GetMethodBuilder {
+		public static Getter getMethod(final String p_strFieldName, final DataTypeEnum p_eReturnType) {
 			Objects.requireNonNull(p_strFieldName);
 			Objects.requireNonNull(p_eReturnType);
-			return new Getter( p_eReturnType, declaration(p_strFieldName, p_eReturnType), body(p_strFieldName, p_eReturnType));
+			return new Getter(p_eReturnType, declaration(p_strFieldName, p_eReturnType),
+					body(p_strFieldName, p_eReturnType));
 		}
 
 		private static String declaration(final String p_strFieldName, final DataTypeEnum p_eReturnType) {

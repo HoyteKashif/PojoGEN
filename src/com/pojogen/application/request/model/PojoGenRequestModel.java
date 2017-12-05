@@ -1,22 +1,21 @@
-package com.easytech.pojogen.model;
+package com.pojogen.application.request.model;
 
 import java.util.Map;
 
-import com.easytech.request.implementation.IRequest;
-import com.easytech.request.implementation.PojoGenRequest;
-import com.easytech.staticvalues.PojoStaticValues.DataTypeEnum;
+import com.pojogen.application.request.IRequest;
+import com.pojogen.application.request.PojoGenRequest;
+import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
 
 public class PojoGenRequestModel {
 
 	private final IRequest oRequest = new PojoGenRequest();
 	private String strClazzName;
 	private Map<String, DataTypeEnum> mapNameToDataType;
-	
-	public IRequest getRequest()
-	{
+
+	public IRequest getRequest() {
 		return oRequest;
 	}
-	
+
 	public void setClazzname(final String p_strClazzName) {
 		this.strClazzName = p_strClazzName;
 	}
