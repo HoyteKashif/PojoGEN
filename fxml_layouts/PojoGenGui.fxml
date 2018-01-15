@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.* ?>
+<?import javafx.scene.layout.* ?>
+<?import javafx.scene.control.* ?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
+	fx:controller="com.pojogen.application.gui.PojoGenGuiFxmlController">
+	<center>
+		<GridPane vgap="5" hgap="5">
+			<padding>
+				<Insets top="10" right="10" bottom="10" left="10" />
+			</padding>
+
+			<children>
+
+				<!-- Destination HBox -->
+				<HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
+					<padding>
+						<Insets top="15" right="12" bottom="15" left="12" />
+					</padding>
+					<children>
+						<Label text="Destination:" />
+						<TextField fx:id="txtDestination" />
+						<Button fx:id="btnBrowse" text="Browse" onAction="#openFileBrowser" />
+					</children>
+				</HBox>
+
+				<!-- Class Name HBox -->
+				<HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
+					<padding>
+						<Insets top="15" right="12" bottom="15" left="12" />
+					</padding>
+					<children>
+						<Label text="Class Name: " style="-fx-font-size:12px; -fx-font-weight: bold;" />
+						<TextField fx:id="txtClassName" />
+					</children>
+				</HBox>
+
+				<!-- Class Member list -->
+				<ScrollPane hbarPolicy="NEVER"
+					style="-fx-background-color:transparent;" GridPane.columnIndex="0"
+					GridPane.rowIndex="2">
+					<content>
+						<VBox fx:id="vboxMembers" style="-fx-border-width:5px">
+							<padding>
+								<Insets top="10" right="10" bottom="10" left="10" />
+							</padding>
+						</VBox>
+					</content>
+				</ScrollPane>
+
+				<!-- New Member button -->
+				<HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="3">
+					<padding>
+						<Insets top="15" right="12" bottom="15" left="12" />
+					</padding>
+					<Button text="Add Member" onAction="#addMemberBox" />
+				</HBox>
+			</children>
+		</GridPane>
+	</center>
+	<bottom>
+		<HBox alignment="center" style="-fx-background-color: #336699"
+			spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
+			<padding>
+				<Insets top="15" right="12" bottom="15" left="12" />
+			</padding>
+			<children>
+				<Button fx:id="btnCancel" text="Cancel" prefWidth="100"
+					prefHeight="20" onAction="#closeWindow" />
+				<Button text="Generate" prefWidth="100" prefHeight="20"
+					onAction="#generatePOJO" />
+			</children>
+		</HBox>
+	</bottom>
+</BorderPane>

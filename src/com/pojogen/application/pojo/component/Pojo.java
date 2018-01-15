@@ -17,19 +17,27 @@ import com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum;
  * Class used to represent a Plain old JAVA Object (POJO).
  * POJO is made of members/properties and their getter or setter methods.
  * 
- * @author WizardOfOz
+ * @author Kashif Hoyte
  *
  */
 public class Pojo{
 	private static final String NEWLINE = "\n";
 	private static final String NEWLINE2x = "\n\n";
+	private String m_strPojoClassName;
 	private String m_strRepresentation;
 	private String m_strDeclaration;
 	private List<PojoMethod> m_MethodList;
 	private List<PojoMember> m_MemberList;
 	private PojoMethod m_Constructor;
 	
-	private Pojo(){}
+	private Pojo(final String p_strPojoClassName){
+		this.m_strPojoClassName = p_strPojoClassName;
+	}
+	
+	public String getPojoClassName()
+	{
+		return m_strPojoClassName;
+	}
 	
 	public PojoMethod getConstructor(){
 		return this.m_Constructor;
@@ -133,7 +141,7 @@ public class Pojo{
 			
 			//TODO: add a list of imports instead of the long names for each class
 			
-			final Pojo pojoClazz = new Pojo();
+			final Pojo pojoClazz = new Pojo(p_strClazzName);
 			pojoClazz.setDeclaration(p_strClazzName);
 			pojoClazz.setConstructor(constructor);
 			pojoClazz.setMemberList(members);

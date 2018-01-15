@@ -31,7 +31,8 @@ public class PojoGenRequest implements IRequest {
 		if (!lstClassPartValues.isEmpty()) {
 			strClassName = lstClassPartValues.get(0);
 		}
-
+		
+		//FIXME:
 		System.out.println(PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).toString());
 		
 //		outputToCurrentWorkingDirectory(strClassName, PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).toString().getBytes());
@@ -68,6 +69,8 @@ public class PojoGenRequest implements IRequest {
 		return this;
 	}
 	
+	
+	//TODO: Method to assist with outputting the class to a selected location/directory
 	/**
 	 * Used to output data to the current working Directory.
 	 * @param p_strClassname
