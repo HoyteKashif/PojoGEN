@@ -209,12 +209,28 @@ public class PojoGenGuiFxmlController {
 		return null;
 	}
 
+	private File getDestinationDirectory() throws Exception {
+		if (PojoGenValidationHelper.hasText(txtDestination.getText())) {
+			return new File(txtDestination.getText());
+		}
+		throw new Exception("non-null text destination is required.");
+	}
+
+	private String buildAbsoluteFilePath() throws Exception {
+		if (PojoGenValidationHelper.hasText(txtDestination.getText())) {
+			return String.format("%s%s%s.java", txtDestination.getText(), System.getProperty("file.separator"),
+					txtClassName.getText());
+		}
+		throw new Exception("non-null text destination is required.");
+	}
+
 	private void printToFile(final Pojo pojo) throws IOException {
 		if (PojoGenValidationHelper.hasText(txtDestination.getText())) {
 			final File destinationDirectory = new File(txtDestination.getText());
 			if (Files.isDirectory(destinationDirectory.toPath(), LinkOption.NOFOLLOW_LINKS)) {
-				final File file = new File(destinationDirectory.getAbsolutePath() + System.getProperty("file.separator")
-						+ pojo.getPojoClassName() + ".java");
+				final String filename = String.format("%s%s%s.java", destinationDirectory.getAbsolutePath(),
+						System.getProperty("file.separator"), pojo.getPojoClassName());
+				final File file = new File(filename);
 				final FileWriter writer = new FileWriter(file);
 				writer.write(pojo.toString());
 				writer.flush();
