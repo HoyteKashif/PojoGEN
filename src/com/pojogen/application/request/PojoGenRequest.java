@@ -7,13 +7,15 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Map;
 
+import com.pojogen.application.pojo.component.Pojo;
 import com.pojogen.application.pojo.component.Pojo.PojoBuilder;
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
 import com.pojogen.application.shared.util.PojoStaticValues;
 
 /**
- * Class used to represent a request from the user to create a JAVA class or object model (POJO).
- *  
+ * Class used to represent a request from the user to create a JAVA class or
+ * object model (POJO).
+ * 
  * @author Kashif Hoyte
  *
  */
@@ -24,22 +26,18 @@ public class PojoGenRequest implements IRequest {
 	}
 
 	@Override
-	public void process() throws Exception {
+	public Pojo process() throws Exception {
 
 		String strClassName = "";
 		final List<String> lstClassPartValues = m_argumentMap.get(ArgumentPartEnum.CLASS_PART);
 		if (!lstClassPartValues.isEmpty()) {
 			strClassName = lstClassPartValues.get(0);
 		}
-		
-		//FIXME:
-		System.out.println(PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).toString());
-		
-//		outputToCurrentWorkingDirectory(strClassName, PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).toString().getBytes());
+
+		return PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART));
 	}
 
-	private void validateArgumentMap(final Map<ArgumentPartEnum, List<String>> p_argumentMap) throws Exception
-	{
+	private void validateArgumentMap(final Map<ArgumentPartEnum, List<String>> p_argumentMap) throws Exception {
 		if (p_argumentMap.isEmpty()) {
 			throw new Exception(PojoStaticValues.DEFAULT_ERROR_MESSAGE);
 		} else if (!p_argumentMap.containsKey(ArgumentPartEnum.CLASS_PART)
@@ -53,26 +51,26 @@ public class PojoGenRequest implements IRequest {
 					+ DataTypeEnum.getOptions());
 		}
 	}
-	
+
 	/**
-	 * This method determines whether or not the user has submitted all the values necessary 
-	 * to allow for this request to be processed. If the user has not included a value necessary for 
-	 * this request an error message is output to the command line.
+	 * This method determines whether or not the user has submitted all the
+	 * values necessary to allow for this request to be processed. If the user
+	 * has not included a value necessary for this request an error message is
+	 * output to the command line.
 	 */
 	@Override
 	public IRequest setArgumentMap(final Map<ArgumentPartEnum, List<String>> p_argumentMap) throws Exception {
-		
+
 		validateArgumentMap(p_argumentMap);
 
 		// passed all the test so set it
 		this.m_argumentMap = p_argumentMap;
 		return this;
 	}
-	
-	
-	//TODO: Method to assist with outputting the class to a selected location/directory
+
 	/**
 	 * Used to output data to the current working Directory.
+	 * 
 	 * @param p_strClassname
 	 * @param p_Bytes
 	 * @throws Exception
@@ -83,7 +81,7 @@ public class PojoGenRequest implements IRequest {
 			final String cwd = (String) System.getProperties().get("user.dir");
 			final String separator = (String) System.getProperties().getProperty("file.separator");
 			final String filename = cwd + separator + p_strClassname + ".java";
-			
+
 			Files.write(new File(filename).toPath(), p_Bytes, StandardOpenOption.CREATE_NEW);
 		} catch (final IOException e) {
 			throw new Exception("Error when trying to write the Pojo to a file.", e);

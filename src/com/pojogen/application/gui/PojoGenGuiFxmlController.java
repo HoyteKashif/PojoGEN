@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.lang.model.SourceVersion;
 
 import com.pojogen.application.pojo.component.Pojo;
+import com.pojogen.application.request.model.PojoGenRequestModel;
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
 import com.pojogen.application.shared.util.StringHelper;
 
@@ -58,8 +59,7 @@ public class PojoGenGuiFxmlController {
 
 	@FXML
 	private void openFileBrowser() {
-		final DirectoryChooser dirChooser = new DirectoryChooser();
-		File oDirectory = dirChooser.showDialog(txtDestination.getScene().getWindow());
+		final File oDirectory = new DirectoryChooser().showDialog(txtDestination.getScene().getWindow());
 
 		if (null != oDirectory) {
 			txtDestination.setText(oDirectory.getAbsolutePath());
@@ -68,14 +68,30 @@ public class PojoGenGuiFxmlController {
 
 	@FXML
 	private void addMemberBox() {
+
+		// create horizontal box
 		final HBox horizontalBox = new HBox();
 		horizontalBox.setPadding(new Insets(15, 12, 15, 12));
 		horizontalBox.setSpacing(10);
 
+		// add horizontal box to the vertical group of members box
+		vboxMembers.getChildren().add(horizontalBox);
+
+		// create member name text field
 		final TextField _memberName = new TextField();
 		_memberName.setPromptText("Member Name");
 
-		final ChoiceBox<String> choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(DataTypeEnum.getTypes()));
+		// add member name text field to horizontal box
+		horizontalBox.getChildren().add(_memberName);
+
+		// add data type choice box to the horizontal box
+		horizontalBox.getChildren().add(new ChoiceBox<>(FXCollections.observableArrayList(DataTypeEnum.getTypes())));
+
+		// add remove button to the the horizontal box
+		horizontalBox.getChildren().add(newRemoveButton());
+	}
+
+	private Button newRemoveButton() {
 
 		final Button btnRemove = new Button("remove");
 		btnRemove.setOnAction(new EventHandler<ActionEvent>() {
@@ -90,126 +106,103 @@ public class PojoGenGuiFxmlController {
 				}
 			}
 		});
-
-		horizontalBox.getChildren().addAll(_memberName, choiceBox, btnRemove);
-
-		vboxMembers.getChildren().add(horizontalBox);
+		return btnRemove;
 	}
-	
-	private void validatePojoClassAndMemberNames() throws Exception
-	{
+
+	private static final String FX_TEXT_BOX_BORDER_RED = "-fx-text-box-border: red";
+
+	/**
+	 * Method to validate class
+	 * 
+	 * @throws Exception
+	 */
+	private void validatePojoClassAndMemberNames() throws Exception {
+
+		// validate class name
 		if (hasValidClassName()) {
-			if (null != txtClassName.getStyle() && txtClassName.getStyle().contains("-fx-text-box-border: red")) {
+			if (null != txtClassName.getStyle() && txtClassName.getStyle().contains(FX_TEXT_BOX_BORDER_RED)) {
 				txtClassName.setStyle(null);
 			}
 		} else {
-			txtClassName.setStyle("-fx-text-box-border: red");
+			txtClassName.setStyle(FX_TEXT_BOX_BORDER_RED);
 		}
 
-		final Map<String,Integer> memberNames = new HashMap<>();
+		// validate class field names
 		for (Node memberNode : vboxMembers.getChildren()) {
-			final TextField txtMemberName = getMemberNameTextField((HBox) memberNode);
-			final String memberName = null != txtMemberName ? txtMemberName.getText().trim() : "";
 
-			if (isValidMemberName(txtMemberName.getText())) {
-				if (null != txtMemberName.getStyle() && txtMemberName.getStyle().contains("-fx-text-box-border: red")) {
-					txtMemberName.setStyle(null);
+			final TextField memberName = getMemberNameTextField((HBox) memberNode);
+			if (isValidMemberName(memberName.getText())) {
+				if (null != memberName.getStyle() && memberName.getStyle().contains(FX_TEXT_BOX_BORDER_RED)) {
+					memberName.setStyle(null);
 				}
 			} else {
-				txtMemberName.setStyle("-fx-text-box-border: red");
-			}
-			
-			if (memberNames.containsKey(txtMemberName.getText())) {
-				txtMemberName.setStyle("-fx-text-box-border: red");
-			}
-			else
-			{
-				memberNames.put(txtMemberName.getText(), 1);
+				memberName.setStyle(FX_TEXT_BOX_BORDER_RED);
 			}
 		}
 	}
-	
-	private boolean hasValidClassName()
-	{
+
+	private boolean hasInvalidData() throws Exception {
+		// validate class name
+		if (!hasValidClassName()) {
+			return true;
+		}
+
+		// validate class field names
+		for (Node memberNode : vboxMembers.getChildren()) {
+
+			if (!isValidMemberName(getMemberNameTextField((HBox) memberNode).getText())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean hasValidClassName() {
 		return SourceVersion.isName(txtClassName.getText());
 	}
-	
-	
-	private static boolean isValidMemberName(final String p_strMemberName)
-	{
+
+	private static boolean isValidMemberName(final String p_strMemberName) {
 		if (null == p_strMemberName)
 			return false;
-		
+
 		return SourceVersion.isIdentifier(p_strMemberName);
-	}	
+	}
 
 	@FXML
 	private void generatePOJO() throws Exception {
-		
+
+		// checks the fields and class name then changes the color of the field
 		validatePojoClassAndMemberNames();
-		
-		
-		final Map<String, DataTypeEnum> nameToTypeMap = new HashMap<>();
-		boolean isValidPojo = true;
+		if (hasInvalidData()) {
+			return;
+		}
+
 		// get POJO member map
+		final Map<String, DataTypeEnum> nameToTypeMap = new HashMap<>();
 		for (Node memberNode : vboxMembers.getChildren()) {
 			final TextField txtMemberName = getMemberNameTextField((HBox) memberNode);
 			final ChoiceBox<String> chboxDataTypes = getMemberChoiceBox((HBox) memberNode);
 
-			// TODO: check that the member names are not duplicates
-
-			if (!SourceVersion.isIdentifier(txtMemberName.getText())) {
-				isValidPojo = false;
-				txtMemberName.setStyle("-fx-text-box-border: red");
-				System.out.println(txtMemberName.getText() + " is an invalid member name.");
-			} else {
-				if (null != txtMemberName.getStyle() && txtMemberName.getStyle().contains("-fx-text-box-border: red")) {
-					txtMemberName.setStyle(null);
-				}
-			}
-
 			nameToTypeMap.put(getMemberName(txtMemberName), getMemberDataType(chboxDataTypes));
 		}
 
-		performValidation();
+		try {
 
-		if (!SourceVersion.isName(txtClassName.getText())) {
-			txtClassName.setStyle("-fx-text-box-border: red");
-			System.out.println(txtClassName.getText() + " is an invalid member name.");
+			// build POJO model
+			final PojoGenRequestModel oRequestModel = new PojoGenRequestModel();
+			oRequestModel.setClazzname(txtClassName.getText());
+			oRequestModel.setMemberMap(nameToTypeMap);
+
+			// build POJO
+			final Pojo pojo = Pojo.PojoBuilder.getPojo(oRequestModel);
+
+			// print POJO
+			printToFile(pojo);
+
+		} catch (final Exception e) {
+			e.printStackTrace();
 		}
-		else {
-			if (null != txtClassName.getStyle() && txtClassName.getStyle().contains("-fx-text-box-border: red")) {
-				txtClassName.setStyle(null);
-			}
-		}
-		
-
-		// TODO: Uncomment
-		// if (isValidPojo) {
-		// final PojoGenRequestModel oRequestModel = new PojoGenRequestModel();
-		// oRequestModel.setClazzname(txtClassName.getText());
-		// oRequestModel.setMemberMap(nameToTypeMap);
-		// try {
-		// printToFile(Pojo.PojoBuilder.getPojo(oRequestModel));
-		// } catch (final Exception e) {
-		// e.printStackTrace();
-		// }
-		// }
-
-	}
-
-	private boolean performValidation() {
-		// TODO-
-		/**
-		 * check the class name against the JAVA Specification
-		 * 
-		 * check the member names against the JAVA Specification
-		 * 
-		 * 
-		 *
-		 */
-
-		return true;
 	}
 
 	private void validateMemberNode(final HBox p_Node) throws Exception {
@@ -260,32 +253,39 @@ public class PojoGenGuiFxmlController {
 		return null;
 	}
 
-	private File getDestinationDirectory() throws Exception {
+	private File getDestinationDirectory() {
 		if (StringHelper.hasText(txtDestination.getText())) {
 			return new File(txtDestination.getText());
 		}
-		throw new Exception("non-null text destination is required.");
+
+		throw new IllegalArgumentException("non-null text destination is required.");
 	}
 
-	private String buildAbsoluteFilePath() throws Exception {
+	private String buildJavaFileName() {
 		if (StringHelper.hasText(txtDestination.getText())) {
 			return String.format("%s%s%s.java", txtDestination.getText(), System.getProperty("file.separator"),
 					txtClassName.getText());
 		}
-		throw new Exception("non-null text destination is required.");
+
+		throw new IllegalArgumentException("non-null text destination is required.");
 	}
 
 	private void printToFile(final Pojo pojo) throws IOException {
 		if (StringHelper.hasText(txtDestination.getText())) {
-			final File destinationDirectory = new File(txtDestination.getText());
-			if (Files.isDirectory(destinationDirectory.toPath(), LinkOption.NOFOLLOW_LINKS)) {
-				final String filename = String.format("%s%s%s.java", destinationDirectory.getAbsolutePath(),
+
+			final File destDirectory = new File(txtDestination.getText());
+			if (Files.isDirectory(destDirectory.toPath(), LinkOption.NOFOLLOW_LINKS)) {
+
+				final String filename = String.format("%s%s%s.java", destDirectory.getAbsolutePath(),
 						System.getProperty("file.separator"), pojo.getPojoClassName());
+
 				final File file = new File(filename);
-				final FileWriter writer = new FileWriter(file);
-				writer.write(pojo.toString());
-				writer.flush();
-				writer.close();
+
+				try (FileWriter writer = new FileWriter(file)) {
+					writer.write(pojo.toString());
+					writer.flush();
+				}
+
 			}
 		}
 	}

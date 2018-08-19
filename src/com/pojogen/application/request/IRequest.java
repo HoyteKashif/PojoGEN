@@ -3,6 +3,8 @@ package com.pojogen.application.request;
 import java.util.List;
 import java.util.Map;
 
+import com.pojogen.application.pojo.component.Pojo;
+
 /**
  * Class used to represent a request from the user which is made of two
  * behaviors or functions, process() performs the work needed to be done in order to satisfy the 
@@ -35,6 +37,6 @@ public interface IRequest{
 		}
 	}
 	
-	void process() throws Exception;
+	Pojo process() throws Exception;
 	IRequest setArgumentMap(final Map<ArgumentPartEnum,List<String>> p_argumentMap) throws Exception;
 }
