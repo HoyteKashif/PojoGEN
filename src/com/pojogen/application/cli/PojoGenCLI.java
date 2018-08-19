@@ -14,8 +14,9 @@ public class PojoGenCLI {
 				RequestFactory
 						.createRequest(Collections.singletonMap(ArgumentPartEnum.HELP_PART, Collections.emptyList()))
 						.process();
-			} catch (Exception e1) {
+			} catch (Exception _exception) {
 				System.out.println("Unable to process the Pojo Request");
+				_exception.printStackTrace();
 			}
 		}
 	}

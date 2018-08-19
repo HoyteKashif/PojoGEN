@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<datatypes>
+	<type>
+		<qualified_name>java.math.BigDecimal</qualified_name>
+		<prefix>l</prefix>
+		<suffix>_bigdecimal</suffix>
+		<import>T</import>
+	</type>
+	<type>
+		<qualified_name>java.math.BigInteger</qualified_name>
+		<prefix>bi</prefix>
+		<suffix>_biginteger</suffix>
+		<import>T</import>
+	</type>
+	<type>
+		<qualified_name>java.sql.Timestamp</qualified_name>
+		<prefix>ts</prefix>
+		<suffix>_timestamp</suffix>
+		<import>T</import>
+	</type>
+	<type>
+		<qualified_name>java.sql.Date</qualified_name>
+		<prefix>dt</prefix>
+		<suffix>_date</suffix>
+		<import>T</import>
+	</type>
+	<type>
+		<qualified_name>Integer</qualified_name>
+		<prefix>i</prefix>
+		<suffix>_integer</suffix>
+		<import>F</import>
+	</type>
+	<type>
+		<qualified_name>String</qualified_name>
+		<prefix>str</prefix>
+		<suffix>_string</suffix>
+		<import>F</import>
+	</type>
+	<type>
+		<qualified_name>Float</qualified_name>
+		<prefix>fl</prefix>
+		<suffix>_float</suffix>
+		<import>F</import>
+	</type>
+	<type>
+		<qualified_name>Double</qualified_name>
+		<prefix>dl</prefix>
+		<suffix>_double</suffix>
+		<import>F</import>
+	</type>
+	<type>
+		<qualified_name>Long</qualified_name>
+		<prefix>lg</prefix>
+		<suffix>_long</suffix>
+		<import>F</import>
+	</type>
+	<type>
+		<qualified_name>Object</qualified_name>
+		<prefix>o</prefix>
+		<suffix>_object</suffix>
+		<import>F</import>
+	</type>
+	
+	<type>lst, java.util.ArrayList, import?yes</type>
+	<type>lst, java.util.LinkedList, import?yes</type>
+	<type>map, java.util.LinkedHashMap, import?yes</type>
+	<type>set, java.util.LinkedHashSet, import?yes</type>
+	<type>map, java.util.HashMap, import?yes</type>
+	<type>set, java.util.HashSet, import?yes</type>
+	<type>hsh, java.util.Hashtable, import?yes</type>
+	<type>arr, Array, import?no</type>
+	<type>tset, java.util.TreeSet, import?yes</type>
+	<type>tmap, java.util.TreeMap, import?yes</type>
+	<type>stk, java.util.Stack, import?yes</type>
+	
+</datatypes>

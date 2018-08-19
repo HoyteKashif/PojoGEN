@@ -91,7 +91,7 @@ public class PojoDataTypeHelper {
 			return true;
 		}
 
-		private static int maxClazzLength() {
+		public static int maxClazzLength() {
 			int max = -1;
 			for (DataTypeEnum dataType : values()) {
 				int length = dataType.getClazz().length();
@@ -104,57 +104,44 @@ public class PojoDataTypeHelper {
 
 		public static String getOptions() {
 			final List<String> lstDataTypes = new ArrayList<>();
-			StringBuilder sb = new StringBuilder();
+
+			// get the length of the longest class with 2 tabs
+			final int iMaxClazzWithTabLength = maxClazzLength() + PojoStaticValues.TAB.length();
 
 			// add the Java Data Type
-			for (DataTypeEnum dataType : values()) {
-				if (!DataTypeEnum.UNSPECIFIED.equals(dataType)) {
-					sb.append(dataType.getClazz());
-
-					int i = dataType.getClazz().length();
-					while (i++ < maxClazzLength() + 1) {
-						sb.append(" ");
-					}
-					sb.append("|" + PojoStaticValues.TAB2X);
-					sb.append(dataType.name().toLowerCase());
-					sb.append("\n");
-					lstDataTypes.add(sb.toString());
-
-					sb = new StringBuilder();
-				}
-			}
-
-			// create space between the type extension and the Java Data Type
-			int maxLineLength = -1;
-			for (String strType : lstDataTypes) {
-				final int length = strType.length();
-				if (length > maxLineLength) {
-					maxLineLength = length;
+			for (DataTypeEnum eType : values()) {
+				if (!DataTypeEnum.UNSPECIFIED.equals(eType)) {
+					lstDataTypes.add(String.format("%-" + iMaxClazzWithTabLength + "s|%s", eType.getClazz(),
+							PojoStaticValues.TAB + eType.name()));
 				}
 			}
 
 			// add the extension (name of ENUM)
 			final StringBuilder strBuilder = new StringBuilder();
 			strBuilder.append("DataType Options:\n");
+
+			final int iLineLength = getMaxLength(lstDataTypes);
+			final String lineSeparator = StringHelper.multiplyString("-", iLineLength);
 			for (Iterator<String> itrTypes = lstDataTypes.iterator(); itrTypes.hasNext();) {
-				String strType = itrTypes.next();
-				int i = 0;
-				while (i++ < maxLineLength + 1) {
-					strBuilder.append("-");
-				}
-
-				strBuilder.append("\n");
-				strBuilder.append(strType);
-
-				if (!itrTypes.hasNext()) {
-					int c = 0;
-					while (c++ < maxLineLength + 1) {
-						strBuilder.append("-");
-					}
+				final String line = itrTypes.next();
+				if (itrTypes.hasNext()) {
+					strBuilder.append(String.format("\n%s\n%s", line, StringHelper.replaceCharAt(lineSeparator, iMaxClazzWithTabLength, "+")));
+				} else {
+					strBuilder.append(String.format("\n%s\n%s", line, lineSeparator));
 				}
 			}
 
 			return strBuilder.toString();
 		}
+	}
+
+	public static int getMaxLength(final List<String> p_lstStrings) {
+		int max = 0;
+		for (String string : p_lstStrings) {
+			if (max < string.length()) {
+				max = string.length();
+			}
+		}
+		return max;
 	}
 }

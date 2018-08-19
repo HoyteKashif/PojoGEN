@@ -29,7 +29,9 @@ public class SampleRequest implements IRequest{
 		sampleMembers.add("buzz_string");
 		sampleMembers.add("fizz_buzz_bigdecimal");
 		
-		System.out.println("ex:\n" + PojoStaticValues.TAB + "PojoGen -c FizzBuzz -p fizz_string buzz_string fizz_buzz_bigdecimal\n");
+		System.out.println("ex:\n" + PojoStaticValues.TAB
+				+ String.format("PojoGen %s FizzBuzz %s fizz_string buzz_string fizz_buzz_bigdecimal\n",
+						ArgumentPartEnum.CLASS_PART.getKey(), ArgumentPartEnum.MEMBER_PART.getKey()));
 		System.out.println(Pojo.PojoBuilder.getPojo("FizzBuzz", sampleMembers));
 	}
 

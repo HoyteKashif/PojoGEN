@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PojoGen" basedir=".">
+	<!-- create gui jar -->
+	<!-- create cli jar -->
+	<!-- create lib jar to be forked and run from the ant window-->
+</project>

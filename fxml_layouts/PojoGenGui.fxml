@@ -11,9 +11,8 @@
 			<padding>
 				<Insets top="10" right="10" bottom="10" left="10" />
 			</padding>
-
+			
 			<children>
-
 				<!-- Destination HBox -->
 				<HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
 					<padding>
