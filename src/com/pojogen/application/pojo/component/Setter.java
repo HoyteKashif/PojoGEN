@@ -1,59 +1,52 @@
 package com.pojogen.application.pojo.component;
 
-import java.util.Objects;
+import static com.pojogen.application.shared.util.PojoStaticValues.TAB;
+import static com.pojogen.application.shared.util.PojoStaticValues.TAB2X;
+import static java.util.Objects.requireNonNull;
 
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
-import com.pojogen.application.shared.util.PojoStaticValues;
 
-public class Setter implements PojoMethod {
-	private final DataTypeEnum m_eDataType;
-	private final String m_strDeclaration;
-	private final String m_strBody;
+public final class Setter implements PojoMethod {
+	private final String name;
+	private final DataTypeEnum dataType;
 
-	private Setter(final DataTypeEnum p_eDataType, final String p_strDeclaration, final String p_strBody) {
-		this.m_eDataType = p_eDataType;
-		this.m_strDeclaration = p_strDeclaration;
-		this.m_strBody = p_strBody;
+	public Setter(final String p_name, final DataTypeEnum p_dataType) {
+		this.name = requireNonNull(p_name);
+		this.dataType = requireNonNull(p_dataType);
 	}
 
 	@Override
 	public DataTypeEnum getDataType() {
-		return this.m_eDataType;
+		return dataType;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(m_strDeclaration + "{\n");
-		sb.append(m_strBody + "\n");
-		sb.append(PojoStaticValues.TAB + "}");
+		final StringBuilder sb = new StringBuilder();
+		sb.append(declaration(name, dataType) + "{\n");
+		sb.append(body(name, dataType) + "\n");
+		sb.append(TAB + "}");
 		return sb.toString();
 	}
 
-	public static class SetMethodBuilder {
-		public static Setter getMethod(final String p_strFieldName, final DataTypeEnum p_eDataType) {
-			Objects.requireNonNull(p_strFieldName);
-			Objects.requireNonNull(p_eDataType);
-			return new Setter(p_eDataType, declaration(p_strFieldName, p_eDataType), body(p_strFieldName, p_eDataType));
-		}
+	private static String declaration(final String p_strFieldName, final DataTypeEnum p_eDataType) {
+		final String dataType = p_eDataType.getClazz();
+		final String suffix = p_eDataType.getSuffix();
+		final String methodName = String.format("set%s", p_strFieldName);
+		final String paramName = parameter(suffix, p_strFieldName);
 
-		private static String declaration(final String p_strFieldName, final DataTypeEnum p_eDataType) {
-			final String dataType = p_eDataType.getClazz();
-			final String suffix = p_eDataType.getSuffix();
-			final String methodName = String.format("set%s", p_strFieldName);
-			final String paramName = String.format("p_%s%s", suffix, p_strFieldName);
+		return String.format(TAB + "public void %2$s(final %1$s %3$s)", dataType, methodName, paramName);
+	}
 
-			return String.format(PojoStaticValues.TAB + "public void %2$s(final %1$s %3$s)", dataType, methodName,
-					paramName);
-		}
+	private static String body(final String p_strFieldName, final DataTypeEnum p_eDataType) {
+		final String suffix = p_eDataType.getSuffix();
+		final String memberName = String.format("m_%s%s", suffix, p_strFieldName);
+		final String paramName = parameter(suffix, p_strFieldName);
 
-		private static String body(final String p_strFieldName, final DataTypeEnum p_eDataType) {
-			final String suffix = p_eDataType.getSuffix();
-			final String memberName = String.format("m_%s%s", suffix, p_strFieldName);
-			final String paramName = String.format("p_%s%s", suffix, p_strFieldName);
+		return String.format(TAB2X + "this.%s = %s;", memberName, paramName);
+	}
 
-			return String.format(PojoStaticValues.TAB2X + "this.%s = %s;", memberName, paramName);
-		}
-
+	private static String parameter(final String suffix, final String fieldName) {
+		return String.format("p_%s%s", suffix, fieldName);
 	}
 }

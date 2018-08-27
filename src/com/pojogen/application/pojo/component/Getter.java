@@ -34,6 +34,7 @@ public class Getter implements PojoMethod {
 		public static Getter getMethod(final String p_strFieldName, final DataTypeEnum p_eReturnType) {
 			Objects.requireNonNull(p_strFieldName);
 			Objects.requireNonNull(p_eReturnType);
+
 			return new Getter(p_eReturnType, declaration(p_strFieldName, p_eReturnType),
 					body(p_strFieldName, p_eReturnType));
 		}

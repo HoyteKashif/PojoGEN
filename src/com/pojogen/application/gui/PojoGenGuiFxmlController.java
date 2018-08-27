@@ -207,8 +207,7 @@ public class PojoGenGuiFxmlController {
 
 	private void validateMemberNode(final HBox p_Node) throws Exception {
 		if (p_Node.getChildren().size() != 3) {
-			throw new IllegalArgumentException(
-					"Incorrect use of the PojoGenGuiFxmlController:getTextFieldFromChildren)");
+			throw new IllegalArgumentException("Invalid Node.");
 		}
 	}
 

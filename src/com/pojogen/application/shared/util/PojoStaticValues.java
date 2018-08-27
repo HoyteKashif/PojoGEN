@@ -23,7 +23,7 @@ public final class PojoStaticValues {
 					ArgumentPartEnum.MEMBER_PART.getKey());
 
 	public enum PojoMethodTypeEnum {
-		SET, GET, CONSTRUCTOR
+		SETTER, GETTER, CONSTRUCTOR
 	}
 
 	public static List<IRequest> getRequestTypes() {
@@ -31,5 +31,5 @@ public final class PojoStaticValues {
 	}
 
 	private PojoStaticValues() {
-	};
+	}
 }
