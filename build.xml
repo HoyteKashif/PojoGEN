@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="PojoGen" basedir=".">
+<project name="PojoGen" basedir="." default="gui">
 	<!-- create gui jar -->
 	<!-- create cli jar -->
 	<!-- create lib jar to be forked and run from the ant window-->
+
+	<property name="src" value="src/" />
+
+	<property name="gui.build.dir" value="dist/gui" />
+	<property name="gui.classes" value="dist/gui/classes" />
+
+	<target name="clean_gui">
+		<echo>Remove all the gui build artifacts</echo>
+		<delete dir="${gui.build.dir}" />
+		<delete dir="${gui.classes}" />
+	</target>
+
+	<target name="init_gui">
+		<mkdir dir="${gui.build.dir}" />
+		<mkdir dir="${gui.classes}" />
+	</target>
+
+	<target name="gui" depends="clean_gui, init_gui, compile">
+	</target>
+
+	<target name="compile">
+		<javac includeantruntime="false" destdir="${gui.classes}" target="1.8" debug="true" debuglevel="lines,vars,source" source="1.8" srcdir="${src}" />
+	</target>
 </project>

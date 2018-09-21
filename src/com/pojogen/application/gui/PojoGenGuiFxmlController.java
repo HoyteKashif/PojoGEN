@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.lang.model.SourceVersion;
 
 import com.pojogen.application.pojo.component.Pojo;
-import com.pojogen.application.request.model.PojoGenRequestModel;
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
 import com.pojogen.application.shared.util.StringHelper;
 
@@ -116,7 +115,7 @@ public class PojoGenGuiFxmlController {
 	 * 
 	 * @throws Exception
 	 */
-	private void validatePojoClassAndMemberNames() throws Exception {
+	private void validateEnteredValues() throws Exception {
 
 		// validate class name
 		if (hasValidClassName()) {
@@ -173,7 +172,7 @@ public class PojoGenGuiFxmlController {
 	private void generatePOJO() throws Exception {
 
 		// checks the fields and class name then changes the color of the field
-		validatePojoClassAndMemberNames();
+		validateEnteredValues();
 		if (hasInvalidData()) {
 			return;
 		}
@@ -188,17 +187,8 @@ public class PojoGenGuiFxmlController {
 		}
 
 		try {
-
-			// build POJO model
-			final PojoGenRequestModel oRequestModel = new PojoGenRequestModel();
-			oRequestModel.setClazzname(txtClassName.getText());
-			oRequestModel.setMemberMap(nameToTypeMap);
-
-			// build POJO
-			final Pojo pojo = Pojo.PojoBuilder.getPojo(oRequestModel);
-
-			// print POJO
-			printToFile(pojo);
+			// build POJO then print
+			printToFile(new Pojo.Builder(txtClassName.getText(), nameToTypeMap).build());
 
 		} catch (final Exception e) {
 			e.printStackTrace();

@@ -1,19 +1,19 @@
 package com.pojogen.application.pojo.factory;
 
+import static com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum.GETTER;
+import static com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum.SETTER;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.pojogen.application.pojo.component.Constructor.ConsructorMethodBuilder;
+import com.pojogen.application.pojo.component.Constructor;
 import com.pojogen.application.pojo.component.Getter.GetMethodBuilder;
 import com.pojogen.application.pojo.component.PojoMethod;
-import com.pojogen.application.pojo.component.Setter.SetMethodBuilder;
+import com.pojogen.application.pojo.component.Setter;
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
 import com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum;
-
-import static com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum.GETTER;
-import static com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum.SETTER;
 
 /**
  * 
@@ -28,9 +28,9 @@ public class PojoMethodFactory {
 		if (GETTER == methodType) {
 			return GetMethodBuilder.getMethod(name, dataType);
 		} else if (SETTER == methodType) {
-			return SetMethodBuilder.getMethod(name, dataType);
+			return new Setter(name, dataType);
 		} else {
-			return ConsructorMethodBuilder.getMethod(name);
+			return new Constructor(name);
 		}
 	}
 

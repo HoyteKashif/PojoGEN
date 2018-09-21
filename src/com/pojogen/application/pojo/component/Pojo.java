@@ -130,12 +130,12 @@ public class Pojo {
 			// TODO: add a list of imports instead of the long names for each
 			// class
 
-			final Pojo pojoClazz = new Pojo(clzName);
-			pojoClazz.setDeclaration(clzName);
-			pojoClazz.setConstructor(constructor);
-			pojoClazz.setMemberList(members);
-			pojoClazz.setMethodList(methods);
-			return pojoClazz;
+			final Pojo pojo = new Pojo(clzName);
+			pojo.setDeclaration(clzName);
+			pojo.setConstructor(constructor);
+			pojo.setMemberList(members);
+			pojo.setMethodList(methods);
+			return pojo;
 		}
 	}
 

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.pojogen.application.pojo.component.Pojo;
-import com.pojogen.application.pojo.component.Pojo.PojoBuilder;
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
 import com.pojogen.application.shared.util.PojoStaticValues;
 
@@ -28,13 +27,13 @@ public class PojoGenRequest implements IRequest {
 	@Override
 	public Pojo process() throws Exception {
 
-		String strClassName = "";
-		final List<String> lstClassPartValues = m_argumentMap.get(ArgumentPartEnum.CLASS_PART);
-		if (!lstClassPartValues.isEmpty()) {
-			strClassName = lstClassPartValues.get(0);
+		String className = "";
+		final List<String> classParts = m_argumentMap.get(ArgumentPartEnum.CLASS_PART);
+		if (!classParts.isEmpty()) {
+			className = classParts.get(0);
 		}
 
-		return PojoBuilder.getPojo(strClassName, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART));
+		return new Pojo.Builder(className, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).build();
 	}
 
 	private void validateArgumentMap(final Map<ArgumentPartEnum, List<String>> p_argumentMap) throws Exception {

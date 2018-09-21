@@ -2,10 +2,12 @@ package com.pojogen.application.pojo.component;
 
 import static com.pojogen.application.shared.util.PojoStaticValues.TAB;
 
-public class Constructor{
+import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
+
+public final class Constructor implements PojoMethod {
 	private String clzName;
 
-	private Constructor(final String p_clzName) {
+	public Constructor(final String p_clzName) {
 		this.clzName = p_clzName;
 	}
 
@@ -14,9 +16,10 @@ public class Constructor{
 		return TAB + "public " + clzName + "(){\n" + TAB + "}";
 	}
 
-	public static class ConsructorMethodBuilder {
-		public static Constructor getMethod(final String p_strClazzName) {
-			return new Constructor(p_strClazzName);
-		}
+	@Override
+	public DataTypeEnum getDataType() {
+		// XXX this needs to change, maybe create a different interface to use
+		// when the method being created is a constructor
+		return null;
 	}
 }
