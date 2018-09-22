@@ -1,9 +1,9 @@
 package com.pojogen.application.shared.util;
 
-public class StringHelper {
+public final class StringHelper {
 
 	public final static String EMPTY_STRING = "";
-	
+
 	public static boolean isEmpty(final String p_strData) {
 		return !hasText(p_strData);
 	}
@@ -12,7 +12,7 @@ public class StringHelper {
 		if (null == p_strData) {
 			return false;
 		}
-		
+
 		if (p_strData.isEmpty()) {
 			return false;
 		}
@@ -43,4 +43,26 @@ public class StringHelper {
 		return null;
 	}
 
+	public static String capitalize(final String data) {
+		if (isEmpty(data)) {
+			return EMPTY_STRING;
+		}
+
+		final StringBuilder sb = new StringBuilder();
+
+		// capitalize the first character
+		if (Character.isAlphabetic(data.charAt(0))) {
+			sb.append(String.valueOf(data.charAt(0)).toUpperCase());
+		}
+
+		// add the rest
+		if (data.length() > 1) {
+			sb.append(data.substring(1, data.length()).toLowerCase());
+		}
+
+		return sb.toString();
+	}
+
+	private StringHelper() {
+	}
 }

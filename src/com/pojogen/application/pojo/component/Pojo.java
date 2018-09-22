@@ -8,10 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.pojogen.application.pojo.component.PojoMethod.MethodType;
 import com.pojogen.application.pojo.factory.PojoMethodFactory;
+import com.pojogen.application.shared.util.StringHelper;
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
-
-import static com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum.CONSTRUCTOR;
 
 /**
  * Class used to represent a Plain old JAVA Object (POJO). POJO is made of
@@ -124,7 +124,7 @@ public class Pojo {
 
 		public Pojo build() {
 			final List<PojoMember> members = members(memberToTypeMap);
-			final PojoMethod constructor = PojoMethodFactory.getMethod(CONSTRUCTOR, clzName, null);
+			final PojoMethod constructor = PojoMethodFactory.getMethod(MethodType.CONSTRUCTOR, clzName, null);
 			final List<PojoMethod> methods = PojoMethodFactory.getMethods(memberToTypeMap);
 
 			// TODO: add a list of imports instead of the long names for each
@@ -159,12 +159,7 @@ public class Pojo {
 			String[] arrName = arg.split("_");
 			final StringBuilder nameBuilder = new StringBuilder();
 			for (String namePart : arrName) {
-				if (!namePart.isEmpty() && Character.isAlphabetic(namePart.charAt(0))) {
-					// capitalize the first character
-					nameBuilder.append(String.valueOf(namePart.charAt(0)).toUpperCase());
-					// add the rest
-					nameBuilder.append(namePart.substring(1, namePart.length()).toLowerCase());
-				}
+				nameBuilder.append(StringHelper.capitalize(namePart));
 			}
 
 			String memberName = nameBuilder.toString();
@@ -176,4 +171,6 @@ public class Pojo {
 		}
 		return argToTypeMap;
 	}
+	
+	
 }

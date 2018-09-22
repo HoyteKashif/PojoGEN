@@ -1,36 +1,36 @@
 package com.pojogen.application.pojo.factory;
 
-import static com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum.GETTER;
-import static com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum.SETTER;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 
 import com.pojogen.application.pojo.component.Constructor;
-import com.pojogen.application.pojo.component.Getter.GetMethodBuilder;
+import com.pojogen.application.pojo.component.Getter.Builder;
 import com.pojogen.application.pojo.component.PojoMethod;
+import com.pojogen.application.pojo.component.PojoMethod.MethodType;
 import com.pojogen.application.pojo.component.Setter;
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
-import com.pojogen.application.shared.util.PojoStaticValues.PojoMethodTypeEnum;
 
 /**
  * 
  * @author Kashif Hoyte
  *
  */
-public class PojoMethodFactory {
-	public static PojoMethod getMethod(final PojoMethodTypeEnum methodType, final String name,
-			final DataTypeEnum dataType) {
+public final class PojoMethodFactory {
+	public static PojoMethod getMethod(final MethodType methodType, final String name, final DataTypeEnum dataType) {
 		Objects.requireNonNull(methodType);
 
-		if (GETTER == methodType) {
-			return GetMethodBuilder.getMethod(name, dataType);
-		} else if (SETTER == methodType) {
-			return new Setter(name, dataType);
-		} else {
+		switch (methodType) {
+		case CONSTRUCTOR:
 			return new Constructor(name);
+		case GETTER:
+			return Builder.getMethod(name, dataType);
+		case SETTER:
+			return new Setter(name, dataType);
+		default:
+			throw new IllegalArgumentException();
 		}
 	}
 
@@ -43,12 +43,15 @@ public class PojoMethodFactory {
 	 * @return {@code List<PojoMethod>} List of Methods
 	 */
 	public static List<PojoMethod> getMethods(final Map<String, DataTypeEnum> nameToTypeMap) {
+
 		final List<PojoMethod> methods = new LinkedList<>();
-		for (final String name : nameToTypeMap.keySet()) {
-			DataTypeEnum eType = nameToTypeMap.get(name);
-			methods.add(getMethod(GETTER, name, eType));
-			methods.add(getMethod(SETTER, name, eType));
+		for (final Entry<String, DataTypeEnum> entry : nameToTypeMap.entrySet()) {
+			methods.add(getMethod(MethodType.GETTER, entry.getKey(), entry.getValue()));
+			methods.add(getMethod(MethodType.SETTER, entry.getKey(), entry.getValue()));
 		}
 		return methods;
+	}
+
+	private PojoMethodFactory() {
 	}
 }

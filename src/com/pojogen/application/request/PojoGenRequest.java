@@ -9,7 +9,7 @@ import java.util.Map;
 
 import com.pojogen.application.pojo.component.Pojo;
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
-import com.pojogen.application.shared.util.PojoStaticValues;
+import com.pojogen.application.shared.util.StaticValues;
 
 /**
  * Class used to represent a request from the user to create a JAVA class or
@@ -19,7 +19,7 @@ import com.pojogen.application.shared.util.PojoStaticValues;
  *
  */
 public class PojoGenRequest implements IRequest {
-	Map<ArgumentPartEnum, List<String>> m_argumentMap;
+	Map<CommandLineArgument, List<String>> argumentMap;
 
 	public PojoGenRequest() {
 	}
@@ -28,25 +28,25 @@ public class PojoGenRequest implements IRequest {
 	public Pojo process() throws Exception {
 
 		String className = "";
-		final List<String> classParts = m_argumentMap.get(ArgumentPartEnum.CLASS_PART);
+		final List<String> classParts = argumentMap.get(CommandLineArgument.CLASS);
 		if (!classParts.isEmpty()) {
 			className = classParts.get(0);
 		}
 
-		return new Pojo.Builder(className, m_argumentMap.get(ArgumentPartEnum.MEMBER_PART)).build();
+		return new Pojo.Builder(className, argumentMap.get(CommandLineArgument.MEMBER)).build();
 	}
 
-	private void validateArgumentMap(final Map<ArgumentPartEnum, List<String>> p_argumentMap) throws Exception {
-		if (p_argumentMap.isEmpty()) {
-			throw new Exception(PojoStaticValues.DEFAULT_ERROR_MESSAGE);
-		} else if (!p_argumentMap.containsKey(ArgumentPartEnum.CLASS_PART)
-				|| p_argumentMap.get(ArgumentPartEnum.CLASS_PART).isEmpty()) {
-			throw new Exception("Missing class part.\n" + PojoStaticValues.DEFAULT_ERROR_MESSAGE);
-		} else if (!p_argumentMap.containsKey(ArgumentPartEnum.MEMBER_PART)
-				|| p_argumentMap.get(ArgumentPartEnum.MEMBER_PART).isEmpty()) {
-			throw new Exception("Missing member part.\n" + PojoStaticValues.DEFAULT_ERROR_MESSAGE);
-		} else if (!DataTypeEnum.validTypes(p_argumentMap.get(ArgumentPartEnum.MEMBER_PART))) {
-			throw new Exception("Illegal Member parameter\n\n" + PojoStaticValues.DEFAULT_ERROR_MESSAGE + "\n"
+	private void validateArgumentMap(final Map<CommandLineArgument, List<String>> p_argMap) throws Exception {
+		if (p_argMap.isEmpty()) {
+			throw new Exception(StaticValues.DEFAULT_ERROR_MESSAGE);
+		} else if (!p_argMap.containsKey(CommandLineArgument.CLASS)
+				|| p_argMap.get(CommandLineArgument.CLASS).isEmpty()) {
+			throw new Exception("Missing class part.\n" + StaticValues.DEFAULT_ERROR_MESSAGE);
+		} else if (!p_argMap.containsKey(CommandLineArgument.MEMBER)
+				|| p_argMap.get(CommandLineArgument.MEMBER).isEmpty()) {
+			throw new Exception("Missing member part.\n" + StaticValues.DEFAULT_ERROR_MESSAGE);
+		} else if (!DataTypeEnum.validTypes(p_argMap.get(CommandLineArgument.MEMBER))) {
+			throw new Exception("Illegal Member parameter\n\n" + StaticValues.DEFAULT_ERROR_MESSAGE + "\n"
 					+ DataTypeEnum.getOptions());
 		}
 	}
@@ -58,12 +58,13 @@ public class PojoGenRequest implements IRequest {
 	 * output to the command line.
 	 */
 	@Override
-	public IRequest setArgumentMap(final Map<ArgumentPartEnum, List<String>> p_argumentMap) throws Exception {
+	public IRequest setArgumentMap(final Map<CommandLineArgument, List<String>> p_argMap) throws Exception {
 
-		validateArgumentMap(p_argumentMap);
+		validateArgumentMap(p_argMap);
 
 		// passed all the test so set it
-		this.m_argumentMap = p_argumentMap;
+		this.argumentMap = p_argMap;
+
 		return this;
 	}
 

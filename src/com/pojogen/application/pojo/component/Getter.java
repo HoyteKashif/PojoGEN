@@ -3,7 +3,7 @@ package com.pojogen.application.pojo.component;
 import java.util.Objects;
 
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
-import com.pojogen.application.shared.util.PojoStaticValues;
+import com.pojogen.application.shared.util.StaticValues;
 
 public class Getter implements PojoMethod {
 	private final DataTypeEnum m_eReturnType;
@@ -23,14 +23,14 @@ public class Getter implements PojoMethod {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(strDeclaration + "{\n");
-		sb.append(strBody + "\n");
-		sb.append(PojoStaticValues.TAB + "}");
-		return sb.toString();
+		final StringBuilder method = new StringBuilder();
+		method.append(strDeclaration + "{\n");
+		method.append(strBody + "\n");
+		method.append(StaticValues.TAB + "}");
+		return method.toString();
 	}
 
-	public static class GetMethodBuilder {
+	public static class Builder {
 		public static Getter getMethod(final String p_strFieldName, final DataTypeEnum p_eReturnType) {
 			Objects.requireNonNull(p_strFieldName);
 			Objects.requireNonNull(p_eReturnType);
@@ -43,14 +43,14 @@ public class Getter implements PojoMethod {
 			final String returnType = p_eReturnType.getClazz();
 			final String methodName = String.format("get%s", p_strFieldName);
 
-			return String.format(PojoStaticValues.TAB + "public %1$s %2$s()", returnType, methodName);
+			return String.format(StaticValues.TAB + "public %1$s %2$s()", returnType, methodName);
 		}
 
 		private static String body(final String p_strFieldName, final DataTypeEnum p_eReturnType) {
 			final String suffix = p_eReturnType.getSuffix();
 			final String memberName = String.format("m_%s%s", suffix, p_strFieldName);
 
-			return String.format(PojoStaticValues.TAB2X + "return %s;", memberName);
+			return String.format(StaticValues.TAB2X + "return %s;", memberName);
 		}
 	}
 }

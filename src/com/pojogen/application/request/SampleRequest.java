@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.pojogen.application.pojo.component.Pojo;
-import com.pojogen.application.shared.util.PojoStaticValues;
+import com.pojogen.application.shared.util.StaticValues;
 
 /**
  * Implementation of a Sample Request. <br>
@@ -27,15 +27,15 @@ public class SampleRequest implements IRequest {
 		sampleMembers.add("buzz_string");
 		sampleMembers.add("fizz_buzz_bigdecimal");
 
-		System.out.println("ex:\n" + PojoStaticValues.TAB
+		System.out.println("ex:\n" + StaticValues.TAB
 				+ String.format("PojoGen %s FizzBuzz %s fizz_string buzz_string fizz_buzz_bigdecimal\n",
-						ArgumentPartEnum.CLASS_PART.getKey(), ArgumentPartEnum.MEMBER_PART.getKey()));
+						CommandLineArgument.CLASS.getValue(), CommandLineArgument.MEMBER.getValue()));
 
 		return new Pojo.Builder("FizzBuzz", sampleMembers).build();
 	}
 
 	@Override
-	public IRequest setArgumentMap(Map<ArgumentPartEnum, List<String>> p_argumentMap) throws Exception {
+	public IRequest setArgumentMap(Map<CommandLineArgument, List<String>> p_argumentMap) throws Exception {
 		return this;
 	}
 }

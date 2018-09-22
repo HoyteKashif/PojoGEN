@@ -1,7 +1,7 @@
 package com.pojogen.application.pojo.component;
 
-import static com.pojogen.application.shared.util.PojoStaticValues.TAB;
-import static com.pojogen.application.shared.util.PojoStaticValues.TAB2X;
+import static com.pojogen.application.shared.util.StaticValues.TAB;
+import static com.pojogen.application.shared.util.StaticValues.TAB2X;
 import static java.util.Objects.requireNonNull;
 
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
@@ -22,11 +22,11 @@ public final class Setter implements PojoMethod {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(declaration(name, dataType) + "{\n");
-		sb.append(body(name, dataType) + "\n");
-		sb.append(TAB + "}");
-		return sb.toString();
+		final StringBuilder method = new StringBuilder();
+		method.append(declaration(name, dataType) + "{\n");
+		method.append(body(name, dataType) + "\n");
+		method.append(TAB + "}");
+		return method.toString();
 	}
 
 	private static String declaration(final String p_strFieldName, final DataTypeEnum p_eDataType) {

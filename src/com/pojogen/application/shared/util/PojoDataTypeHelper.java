@@ -106,13 +106,13 @@ public class PojoDataTypeHelper {
 			final List<String> lstDataTypes = new ArrayList<>();
 
 			// get the length of the longest class with 2 tabs
-			final int iMaxClazzWithTabLength = maxClazzLength() + PojoStaticValues.TAB.length();
+			final int iMaxClazzWithTabLength = maxClazzLength() + StaticValues.TAB.length();
 
 			// add the Java Data Type
 			for (DataTypeEnum eType : values()) {
 				if (!DataTypeEnum.UNSPECIFIED.equals(eType)) {
 					lstDataTypes.add(String.format("%-" + iMaxClazzWithTabLength + "s|%s", eType.getClazz(),
-							PojoStaticValues.TAB + eType.name()));
+							StaticValues.TAB + eType.name()));
 				}
 			}
 

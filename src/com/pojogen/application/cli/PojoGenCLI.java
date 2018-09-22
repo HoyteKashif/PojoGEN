@@ -1,12 +1,15 @@
 package com.pojogen.application.cli;
 
-import java.util.Collections;
-
 import com.pojogen.application.pojo.component.Pojo;
-import com.pojogen.application.request.IRequest.ArgumentPartEnum;
+import com.pojogen.application.request.HelpRequest;
 import com.pojogen.application.request.factory.RequestFactory;
 
-public class PojoGenCLI {
+/**
+ * Command Line Interface version of the Pojo Generator Application.
+ * 
+ * @author Kashif Hoyte
+ */
+public final class PojoGenCLI {
 	public static void main(String[] args) {
 		try {
 			Pojo pojo = RequestFactory.createRequest(args).process();
@@ -15,16 +18,7 @@ public class PojoGenCLI {
 				System.out.println(pojo);
 			}
 		} catch (final Exception e) {
-			try {
-				Pojo pojo = RequestFactory
-						.createRequest(Collections.singletonMap(ArgumentPartEnum.HELP_PART, Collections.emptyList()))
-						.process();
-
-				System.out.println(pojo);
-			} catch (Exception _exception) {
-				System.out.println("Unable to process the Pojo Request");
-				_exception.printStackTrace();
-			}
+			HelpRequest.throwRequest();
 		}
 	}
 }

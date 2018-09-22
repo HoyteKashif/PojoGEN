@@ -1,6 +1,6 @@
 package com.pojogen.application.pojo.component;
 
-import static com.pojogen.application.shared.util.PojoStaticValues.TAB;
+import static com.pojogen.application.shared.util.StaticValues.TAB;
 
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
 

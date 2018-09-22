@@ -5,10 +5,9 @@ import static java.util.Objects.requireNonNull;
 import static javax.lang.model.element.Modifier.PRIVATE;
 
 import com.pojogen.application.shared.util.PojoDataTypeHelper.DataTypeEnum;
-import com.pojogen.application.shared.util.PojoStaticValues;
+import com.pojogen.application.shared.util.StaticValues;
 
 public class PojoMember {
-	private static final String SPACE = " ";
 	private final DataTypeEnum dataType;
 	private final String name;
 
@@ -26,6 +25,7 @@ public class PojoMember {
 		final String suffix = dataType.getSuffix();
 		final String memberName = String.format("m_%s%s", suffix, name);
 
-		return PojoStaticValues.TAB + PRIVATE + SPACE + dataType.getClazz() + SPACE + memberName + ";";
+		return StaticValues.TAB + PRIVATE + StaticValues.SPACE + dataType.getClazz() + StaticValues.SPACE + memberName
+				+ ";";
 	}
 }
