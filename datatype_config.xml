@@ -13,7 +13,7 @@
 	xsi:noNamespaceSchemaLocation="datatype_config.xsd">
 	<type>
 		<qualified_name>java.math.BigDecimal</qualified_name>
-		<prefix>l</prefix>
+		<prefix>bd</prefix>
 		<suffix>_bigdecimal</suffix>
 		<import>T</import>
 	</type>
