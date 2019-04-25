@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE datatypes [
+<!ELEMENT datatypes (type+)>
+<!ELEMENT type (qualified_name,prefix,suffix,import)>
+<!ELEMENT qualified_name (#PCDATA)>
+<!ELEMENT prefix (#PCDATA)>
+<!ELEMENT suffix (#PCDATA)>
+<!ELEMENT import (#PCDATA)>
+]>
 
 <datatypes>
 	<type>
@@ -61,17 +69,22 @@
 		<suffix>_object</suffix>
 		<import>F</import>
 	</type>
-	
-	<type>lst, java.util.ArrayList, import?yes</type>
-	<type>lst, java.util.LinkedList, import?yes</type>
-	<type>map, java.util.LinkedHashMap, import?yes</type>
-	<type>set, java.util.LinkedHashSet, import?yes</type>
-	<type>map, java.util.HashMap, import?yes</type>
-	<type>set, java.util.HashSet, import?yes</type>
-	<type>hsh, java.util.Hashtable, import?yes</type>
-	<type>arr, Array, import?no</type>
-	<type>tset, java.util.TreeSet, import?yes</type>
-	<type>tmap, java.util.TreeMap, import?yes</type>
-	<type>stk, java.util.Stack, import?yes</type>
-	
+	<type>
+		<qualified_name>java.util.List</qualified_name>
+		<prefix>lst</prefix>
+		<suffix>_list</suffix>
+		<import>T</import>
+	</type>
+	<type>
+		<qualified_name>java.util.Map</qualified_name>
+		<prefix>map</prefix>
+		<suffix>_map</suffix>
+		<import>T</import>
+	</type>
+	<type>
+		<qualified_name>java.util.Set</qualified_name>
+		<prefix>set</prefix>
+		<suffix>_set</suffix>
+		<import>T</import>
+	</type>
 </datatypes>
