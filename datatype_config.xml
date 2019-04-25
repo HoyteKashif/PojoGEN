@@ -8,7 +8,9 @@
 <!ELEMENT import (#PCDATA)>
 ]>
 
-<datatypes>
+<datatypes 	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="datatype_config.xsd">
 	<type>
 		<qualified_name>java.math.BigDecimal</qualified_name>
 		<prefix>l</prefix>
